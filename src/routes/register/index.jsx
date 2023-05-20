@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { supabase } from '../../clients/supabase'
 
-function RegisterScreen() {
+export default function RegisterRoute() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
@@ -66,5 +66,3 @@ function RegisterScreen() {
     </div>
   )
 }
-
-export default RegisterScreen

@@ -1,33 +1,43 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import HomeScreen from './components/home-screen/index.jsx';
-import AddFriendsScreen from './components/add-friends-screen/index.jsx';
-import RegisterScreen from './components/register/index.jsx';
-import LoginScreen from './components/login';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import HomeRoute from './routes/home'
+import AddFriendsRoute from './routes/add-friends'
+import RegisterRoute from './routes/register'
+import LoginRoute from './routes/login'
+import IndexRoute from './routes'
+import { AuthProvider } from './context/auth'
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <HomeScreen />,
+    path: '/',
+    element: <IndexRoute />,
+    errorElement: <div>error</div>,
   },
   {
-    path: '/login',
-    element: <LoginScreen />
+    index: true,
+    path: '/',
+    element: <HomeRoute />,
+  },
+  {
+    path: 'login',
+    element: <LoginRoute />,
   },
   {
     path: 'register',
-    element: <RegisterScreen />
+    element: <RegisterRoute />,
   },
   {
     path: 'add-friends',
-    element: <AddFriendsScreen />
-  }
-]);
+    element: <AddFriendsRoute />,
+  },
+])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>,
 )

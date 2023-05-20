@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { signIn } from '../../clients/supabase'
 import { useNavigate } from 'react-router-dom'
 
-function LoginScreen() {
+export default function LoginRoute() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -53,5 +53,3 @@ function LoginScreen() {
     </div>
   )
 }
-
-export default LoginScreen
