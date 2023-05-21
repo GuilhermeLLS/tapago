@@ -135,11 +135,9 @@ describe('Quicksort', () => {
   });
 
   it('should correctly sort a reverse-sorted array', () => {
-    const expectedResult = MultipleRandomPostsWithDuplicates.sort((p1, p2) => (p1.created_at > p2.created_at) ? 1 : (p1.created_at < p2.created_at) ? -1 : 0)
-    const sorted = quicksort(expectedResult.reverse())
+    const expectedResult = MultipleRandomPostsWithDuplicates.sort((p1, p2) => (p1.created_at > p2.created_at) ? 1 : (p1.created_at < p2.created_at) ? -1 : 0).reverse()
 
-    console.log(quicksort(expectedResult.reverse()))
-
-    expect(sorted).toEqual(expectedResult);
+    const sorted = quicksort(expectedResult)
+    expect(sorted).toEqual(expectedResult.reverse());
   });
 });
