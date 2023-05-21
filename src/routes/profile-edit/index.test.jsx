@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { screen, fireEvent } from '@testing-library/react'
 import ProfileEditRoute from '.'
 import { renderWithRouter } from '../../test-utils'
+import { supabase } from '../../clients/supabase'
 
 vi.mock('../../clients/supabase', () => {
   return {
@@ -65,17 +66,17 @@ describe('ProfileEditRoute', () => {
   })
 
   it('handles changes in input fields', async () => {
-    renderWithRouter(<ProfileEditRoute />, '/profile-edit');
-    
-    const emailInput = await screen.findByDisplayValue('test@email.com');
-    const nameInput = await screen.findByDisplayValue('Test User');
-  
-    fireEvent.change(emailInput, { target: { value: 'newemail@email.com' } });
-    fireEvent.change(nameInput, { target: { value: 'New User' } });
-  
-    expect(emailInput.value).toBe('newemail@email.com');
-    expect(nameInput.value).toBe('New User');
-  });
+    renderWithRouter(<ProfileEditRoute />, '/profile-edit')
+
+    const emailInput = await screen.findByDisplayValue('test@email.com')
+    const nameInput = await screen.findByDisplayValue('Test User')
+
+    fireEvent.change(emailInput, { target: { value: 'newemail@email.com' } })
+    fireEvent.change(nameInput, { target: { value: 'New User' } })
+
+    expect(emailInput.value).toBe('newemail@email.com')
+    expect(nameInput.value).toBe('New User')
+  })
 
   it('handles save changes click', async () => {
     const mockAlert = vi.spyOn(window, 'alert').mockImplementation(() => {})
@@ -104,5 +105,13 @@ describe('ProfileEditRoute', () => {
 
     expect(mockAlert).toHaveBeenCalled()
     mockAlert.mockRestore()
+  })
+
+  it('fail to find user to will keep loading', () => {
+    vi.spyOn(supabase.auth, 'user').mockReturnValueOnce(null)
+    renderWithRouter(<ProfileEditRoute />, '/profile-edit')
+
+    const loading = screen.getByText('Loading...')
+    expect(loading).toBeInTheDocument()
   })
 })
