@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { screen } from '@testing-library/react'
+import { screen, fireEvent } from '@testing-library/react'
 import HomeRoute from '.'
 import { renderWithRouter } from '../../test-utils'
 
@@ -32,4 +32,43 @@ describe('HomeRoute', () => {
     const posts = screen.getAllByRole('img')
     expect(posts).toHaveLength(1)
   })
+
+  it('changes the sort state when sort selection changes', () => {
+    renderWithRouter(<HomeRoute />, '/')
+  
+    const sortSelect = screen.getByRole('combobox')
+  
+    fireEvent.change(sortSelect, { target: { value: 'Ascending' } })
+    expect(sortSelect.value).toBe('Ascending')
+  
+    fireEvent.change(sortSelect, { target: { value: 'Descending' } })
+    expect(sortSelect.value).toBe('Descending')
+  })
+
+  it('alerts when Upload button is clicked', () => {
+    const mockAlert = vi.spyOn(window, 'alert').mockImplementation(() => {})
+  
+    renderWithRouter(<HomeRoute />, '/')
+    const uploadButton = screen.getByRole('button', { name: 'Upload' })
+  
+    fireEvent.click(uploadButton)
+    expect(mockAlert).toHaveBeenCalledWith('replace me!!')
+  
+    mockAlert.mockRestore()
+  })
+
+  it('renders posts with correct content', () => {
+    renderWithRouter(<HomeRoute />, '/')
+  
+    const postCaption = screen.getByText('NOVO POST')
+    const postLocation = screen.getByText('BELO HORIZONTE UAI')
+    const postDate = screen.getByText('2023-05-19T23:02:02.292783+00:00')
+  
+    expect(postCaption).toBeInTheDocument()
+    expect(postLocation).toBeInTheDocument()
+    expect(postDate).toBeInTheDocument()
+  })
+  
+  
+  
 })
