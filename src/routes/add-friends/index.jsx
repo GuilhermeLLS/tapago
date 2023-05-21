@@ -37,13 +37,15 @@ export default function AddFriendsRoute() {
   return (
     <div className="flex justify-center items-center p-8 h-full">
       <div className="flex flex-col">
-        <label>Friends Email</label>
-        <input
-          className="border-2 border-gray-300 p-2 mb-4 rounded-md"
-          type="email"
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-        />
+        <label>
+          Friends Email
+          <input
+            className="border-2 border-gray-300 p-2 mb-4 rounded-md"
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+          />
+        </label>
         <button className="bg-blue-500 text-white p-2 rounded-md" onClick={addFriendByEmail}>
           Add Friend
         </button>

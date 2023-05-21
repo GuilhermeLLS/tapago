@@ -1,49 +1,36 @@
-import { useState, useEffect} from 'react'
-
-import { supabase } from '../../clients/supabase'
-import quicksort from '../../utils/quicksort'
-
-const divStyle = {
-  display: 'flex',
-  alignItems: 'center'
-};
+import { useState } from 'react'
+import Button from '../../components/button'
+import usePosts from '../../hooks/usePosts'
 
 export default function HomeRoute() {
-  const [posts, setPosts] = useState([])
-  
-  async function fetchPosts(option) {
-    try {
-      const { data, error } = await supabase.from('posts').select('*')
-      if (error) {
-        throw error
-      }
-      setPosts(quicksort(data,option))
-    } catch (error) {
-      alert(error.message)
-    }
-  }
+  const [sort, setSort] = useState()
+  const posts = usePosts(sort)
 
-  function handleSortingchangeChange(event){
+  function handleSortingchangeChange(event) {
     if (event.value == 'Ascending') {
-      fetchPosts('Ascending')
+      setSort('Ascending')
     } else {
-      fetchPosts('Descending')
+      setSort('Descending')
     }
   }
-
-  useEffect(() => {
-    fetchPosts()
-  }, [])
-
   return (
-    <div className="p-8">
-      <div className="p-2" style={divStyle}>
-      <p>Sort Itens</p>
-      <select className="p-6"name="sortItens" id="sortItens" onChange={event => handleSortingchangeChange(event.target)}>
-        <option value="Ascending">Ascending</option>
-        <option value="Descending">Descending</option>
-    </select>
-    </div>
+    <div className="flex flex-col p-8">
+      <Button variant="primary" onClick={() => alert('replace me!!')}>
+        Upload
+      </Button>
+      <div className="p-2 flex items-center">
+        <label htmlFor="sortItems">Sort Itens</label>
+        <select
+          className="p-6"
+          name="sortItens"
+          id="sortItens"
+          value={sort}
+          onChange={(event) => handleSortingchangeChange(event.target)}
+        >
+          <option value="Ascending">Ascending</option>
+          <option value="Descending">Descending</option>
+        </select>
+      </div>
       {posts.map((post) => (
         <Post key={post.id} {...post} />
       ))}
@@ -59,7 +46,5 @@ function Post(item) {
       <p>{item.location}</p>
       <p>{item.created_at}</p>
     </div>
-  )  
+  )
 }
-
-
