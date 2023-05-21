@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { describe, it, expect, vi } from 'vitest'
+import { render, screen, fireEvent } from '@testing-library/react'
 import Button from './index'
 
 describe('Button', () => {
@@ -20,4 +20,44 @@ describe('Button', () => {
     const button = screen.getByRole('button')
     expect(button).toHaveTextContent('Click me!')
   })
+
+  it('should handle onClick event', () => {
+    const mockOnClick = vi.fn()
+    render(<Button variant="secondary" onClick={mockOnClick} >Click me!</Button>)
+    const button = screen.getByRole('button')
+    fireEvent.click(button)
+    expect(mockOnClick).toHaveBeenCalled()
+  })
+
+  it('should handle onFocus event', () => {
+    const mockOnFocus = vi.fn();
+    render(<Button variant="secondary" onFocus={mockOnFocus}>Click me!</Button>)
+    const button = screen.getByRole('button')
+    fireEvent.focus(button)
+    expect(mockOnFocus).toHaveBeenCalled()
+})
+
+it('should handle onBlur event', () => {
+    const mockOnBlur = vi.fn();
+    render(<Button variant="secondary" onBlur={mockOnBlur}>Click me!</Button>)
+    const button = screen.getByRole('button')
+    fireEvent.blur(button)
+    expect(mockOnBlur).toHaveBeenCalled()
+})
+
+it('should handle onMouseOver event', () => {
+    const mockOnMouseOver = vi.fn();
+    render(<Button variant="secondary" onMouseOver={mockOnMouseOver}>Click me!</Button>)
+    const button = screen.getByRole('button')
+    fireEvent.mouseOver(button)
+    expect(mockOnMouseOver).toHaveBeenCalled()
+})
+
+it('should handle onMouseOut event', () => {
+    const mockOnMouseOut = vi.fn();
+    render(<Button variant="secondary" onMouseOut={mockOnMouseOut}>Click me!</Button>)
+    const button = screen.getByRole('button')
+    fireEvent.mouseOut(button)
+    expect(mockOnMouseOut).toHaveBeenCalled()
+})
 })
