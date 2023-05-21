@@ -1,10 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import quicksort from '../utils/quicksort'
 
-function randomDate(start, end) {
-    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-}
-
 const emptyPosts = [];
 
 const oneRandomPost = [
