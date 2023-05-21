@@ -5,7 +5,8 @@ import quicksort from '../../utils/quicksort'
 
 const divStyle = {
   display: 'flex',
-  alignItems: 'center'
+  alignItems: 'center',
+  justifyContent: 'end',
 };
 
 export default function HomeRoute() {
@@ -36,14 +37,25 @@ export default function HomeRoute() {
   }, [])
 
   return (
-    <div className="p-8">
+    <div className="p-6">
+
+      <div className="p-1"  style={divStyle}>
+        <input
+          className="border border-gray-200 rounded-md px-3 w-full py-2 mt-4"
+          placeholder="Search"
+          type="search"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <button className="border border-gray-200 rounded-md px-3 py-2 mt-4">Search</button>
+      </div>
+
       <div className="p-2" style={divStyle}>
-      <p>Sort Itens</p>
-      <select className="p-6"name="sortItens" id="sortItens" onChange={event => handleSortingchangeChange(event.target)}>
-        <option value="Ascending">Ascending</option>
-        <option value="Descending">Descending</option>
-    </select>
-    </div>
+        <p>Sort Itens</p>
+        <select className="p-6"name="sortItens" id="sortItens" onChange={event => handleSortingchangeChange(event.target)}>
+          <option value="Ascending">Ascending</option>
+          <option value="Descending">Descending</option>
+        </select>
+      </div>
       {posts.map((post) => (
         <Post key={post.id} {...post} />
       ))}
