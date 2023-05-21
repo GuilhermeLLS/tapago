@@ -14,23 +14,25 @@ const router = createBrowserRouter([
     path: '/',
     element: <IndexRoute />,
     errorElement: <div>error</div>,
-  },
-  {
-    index: true,
-    path: '/',
-    element: <HomeRoute />,
-  },
-  {
-    path: 'login',
-    element: <LoginRoute />,
-  },
-  {
-    path: 'register',
-    element: <RegisterRoute />,
-  },
-  {
-    path: 'add-friends',
-    element: <AddFriendsRoute />,
+    children: [
+      {
+        index: true,
+        path: '/',
+        element: <HomeRoute />,
+      },
+      {
+        path: 'login',
+        element: <LoginRoute />,
+      },
+      {
+        path: 'register',
+        element: <RegisterRoute />,
+      },
+      {
+        path: 'add-friends',
+        element: <AddFriendsRoute />,
+      },
+    ],
   },
 ])
 

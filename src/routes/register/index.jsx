@@ -40,26 +40,32 @@ export default function RegisterRoute() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black p-5">
-      <span>Name</span>
-      <input
-        className="border border-gray-200 rounded-md px-3 py-2 w-full mt-2 mb-4"
-        onChange={(e) => setName(e.target.value)}
-        value={name}
-      />
-      <span>Email</span>
-      <input
-        className="border border-gray-200 rounded-md px-3 py-2 w-full mt-2 mb-4"
-        onChange={(e) => setEmail(e.target.value)}
-        value={email}
-        type="email"
-      />
-      <span>Password</span>
-      <input
-        className="border border-gray-200 rounded-md px-3 py-2 w-full mt-2 mb-4"
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
-        type="password"
-      />
+      <label>
+        Name
+        <input
+          className="border border-gray-200 rounded-md px-3 py-2 w-full mt-2 mb-4"
+          onChange={(e) => setName(e.target.value)}
+          value={name}
+        />
+      </label>
+      <label>
+        Email
+        <input
+          className="border border-gray-200 rounded-md px-3 py-2 w-full mt-2 mb-4"
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+          type="email"
+        />
+      </label>
+      <label>
+        Password
+        <input
+          className="border border-gray-200 rounded-md px-3 py-2 w-full mt-2 mb-4"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+          type="password"
+        />
+      </label>
       <button className="bg-blue-500 text-white px-4 py-2 rounded-md w-full mt-4" onClick={handleRegister}>
         Register
       </button>

@@ -8,14 +8,10 @@ export default function IndexRoute() {
 
   useEffect(() => {
     if (!user) {
-      navigate('/')
+      navigate('/login')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
-  return (
-    <div className="flex justify-center items-center h-screen">
-      <Outlet />
-    </div>
-  )
+  return <Outlet />
 }
