@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import quicksort from '../utils/quicksort'
+import quicksort from './quicksort'
 
 const emptyPosts = [];
 
