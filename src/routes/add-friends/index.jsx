@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { supabase } from '../../clients/supabase'
+import { getIdFromUserByEmail, updateUserAddFriend } from '../../services/requests'
 
 export default function AddFriendsRoute() {
   const [email, setEmail] = useState('')
 
   async function addFriendByEmail() {
     try {
-      const { data, error } = await supabase.from('users').select('id').eq('email', email).single()
+      const { data, error } = await getIdFromUserByEmail(email)
       if (error) {
         throw error
       }
@@ -19,12 +20,7 @@ export default function AddFriendsRoute() {
       if (!currentUser) {
         throw new Error('User not found')
       }
-      const { error: updateError } = await supabase
-        .from('users')
-        .update({
-          friends: supabase.raw(`array_append(friends, '${friendId}')`),
-        })
-        .eq('id', currentUser.id)
+      const { error: updateError } = await updateUserAddFriend(currentUser.id, friendId)
       if (updateError) {
         throw updateError
       }

@@ -2,12 +2,13 @@ import { useState } from 'react'
 import Button from '../../components/button'
 import SearchBar from '../../components/searchBar'
 import usePosts from '../../hooks/usePosts'
+import Post from '../../components/post'
 
 export default function HomeRoute() {
   const [sort, setSort] = useState()
   const posts = usePosts(sort)
 
-  function handleSortingchangeChange(event) {
+  function handleSortingChange(event) {
     if (event.value == 'Ascending') {
       setSort('Ascending')
     } else {
@@ -34,26 +35,16 @@ export default function HomeRoute() {
           name="sortItens"
           id="sortItens"
           value={sort}
-          onChange={(event) => handleSortingchangeChange(event.target)}
+          onChange={(event) => handleSortingChange(event.target)}
         >
           <option value="Ascending">Ascending</option>
           <option value="Descending">Descending</option>
         </select>
       </div>
-      {posts.map((post) => (
+      {posts.length && posts.map((post) => (
         <Post key={post.id} {...post} />
       ))}
     </div>
   )
 }
 
-function Post(item) {
-  return (
-    <div className="p-4 border-b border-gray-200">
-      <img src={item.photo} alt="Post" className="w-full h-64 object-cover mb-4 rounded-md" />
-      <p>{item.caption}</p>
-      <p>{item.location}</p>
-      <p>{item.created_at}</p>
-    </div>
-  )
-}

@@ -1,7 +1,31 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { fireEvent, screen } from '@testing-library/react'
 import { renderWithRouter } from '../../test-utils'
 import RegisterRoute from '.'
+
+vi.mock('@supabase/supabase-js', () => {
+  return {
+    createClient: () => {
+      return {
+        auth: {
+          user: () => {
+            return {
+              id: 1,
+            }
+          },
+          signUp: () => {
+            return { error: null }
+          },
+          signInWithPassword: () => {
+            return {
+              error: null,
+            }
+          },
+        },
+      }
+    },
+  }
+})
 
 describe('RegisterRoute', () => {
   it('should render the register route', () => {
@@ -32,5 +56,17 @@ describe('RegisterRoute', () => {
     expect(nameInput).toHaveValue('Test')
     expect(emailInput).toHaveValue('test@email.com')
     expect(passwordInput).toHaveValue('123456')
+  })
+
+  it('error on handleRegister sign up throws error', () => {
+    renderWithRouter(<RegisterRoute />, '/register')
+    const nameInput = screen.getByLabelText('Name')
+    const emailInput = screen.getByLabelText('Email')
+
+    const registerButton = screen.getByRole('button', { name: 'Register' })
+
+    fireEvent.click(registerButton)
+    expect(nameInput).toBeEmptyDOMElement()
+    expect(emailInput).toBeEmptyDOMElement()
   })
 })

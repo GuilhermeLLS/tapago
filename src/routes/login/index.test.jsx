@@ -75,4 +75,25 @@ describe('LoginRoute', () => {
     expect(passwordInput).toBeInTheDocument()
     expect(loginButton).toBeInTheDocument()
   })
+
+  it('should navigate to the Sign Up page on clicking the Sign Up button', () => {
+    renderWithRouter(<LoginRoute />, '/login')
+    const signUpButton = screen.getByText('Dont have an account? Sign Up')
+
+    fireEvent.click(signUpButton)
+
+    expect(window.location.pathname).toBe('/register')
+  })
+
+  it('should alert error when fields are empty on submit', () => {
+    vi.spyOn(window, 'alert').mockImplementation(() => {})
+
+    renderWithRouter(<LoginRoute />, '/login')
+    const loginButton = screen.getByText('Login')
+
+    fireEvent.click(loginButton)
+
+    expect(window.alert).toHaveBeenCalledWith('Error: Please fill out all fields')
+
+  })
 })
