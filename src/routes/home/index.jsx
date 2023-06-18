@@ -18,20 +18,14 @@ export default function HomeRoute() {
     }
   }
 
-  const divStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'end',
-  };
-
   return (
     <div className="flex flex-col p-8">
       <UploadPostForm isOpen={isOpen} onClose={() => setIsOpen(false)} />
       <Button variant="primary" onClick={() => setIsOpen(true)}>
         Upload
       </Button>
-      <SearchBar {...posts}/>
-      <div className="p-2 flex items-center" style={divStyle}>
+      <SearchBar {...posts} />
+      <div className="p-2 flex items-center justify-end">
         <label htmlFor="sortItems">Sort Itens</label>
         <select
           className="p-6"

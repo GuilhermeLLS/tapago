@@ -20,24 +20,29 @@ export const signIn = async (email, password) => {
 export const uploadPost = async ({ imageUri, caption, location }) => {
   try {
     const userId = (await supabase.auth.getUser()).data.user.id
-    // Gerar nome de arquivo com base na data e hora atuais
-    const fileName = `/posts/${userId}/${Date.now()}.jpg`
+    let imagePath = ''
+    if (imageUri) {
+      // Gerar nome de arquivo com base na data e hora atuais
+      const fileName = `/posts/${userId}/${Date.now()}.jpg`
 
-    // Fazer upload do Blob para Supabase Storage
-    const { error: uploadError, data } = await supabase.storage.from('pictures').upload(fileName, imageUri, {
-      cacheControl: '3600',
-      upsert: false,
-    })
+      // Fazer upload do Blob para Supabase Storage
+      const { error: uploadError, data } = await supabase.storage.from('pictures').upload(fileName, imageUri, {
+        cacheControl: '3600',
+        upsert: false,
+      })
 
-    if (uploadError) {
-      console.log('uploadError', JSON.stringify(uploadError))
-      throw uploadError
+      if (uploadError) {
+        console.log('uploadError', JSON.stringify(uploadError))
+        throw uploadError
+      }
+
+      imagePath = data.path
     }
     // Adicionar novo registro à tabela 'posts'
     const { error: insertError } = await supabase.from('posts').insert([
       {
         author_id: userId,
-        photo: `storage/v1/object/public/pictures/${data.path}`,
+        photo: imagePath ? `storage/v1/object/public/pictures/${imagePath}` : '',
         caption: caption,
         created_at: new Date(),
         location: location,

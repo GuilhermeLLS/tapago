@@ -53,18 +53,34 @@ describe('HomeRoute', () => {
     expect(sortSelect.value).toBe('Descending')
   })
 
-  it('alerts when Upload button is clicked', () => {
-    const mockAlert = vi.spyOn(window, 'alert').mockImplementation(() => {})
+  it('opens modal when Upload button is clicked', () => {
+    const ResizeObserverMock = vi.fn(() => ({
+      disconnect: vi.fn(),
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+    }))
+
+    vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 
     renderWithRouter(<HomeRoute />, '/')
     const uploadButton = screen.getByRole('button', { name: 'Upload' })
-
     act(() => {
       fireEvent.click(uploadButton)
     })
-    expect(mockAlert).toHaveBeenCalledWith('replace me!!')
 
-    mockAlert.mockRestore()
+    const modalTitle = screen.getByText('Criar Post')
+    const cancelModalButton = screen.getByRole('button', { name: 'Cancelar' })
+    const sendModalButton = screen.getByRole('button', { name: 'Enviar' })
+    const inputs = screen.getAllByRole('textbox')
+    const fileInput = screen.getByLabelText('Imagem')
+
+    expect(modalTitle).toBeInTheDocument()
+    expect(cancelModalButton).toBeInTheDocument()
+    expect(sendModalButton).toBeInTheDocument()
+    expect(inputs).toHaveLength(2)
+    expect(fileInput).toBeInTheDocument()
+
+    vi.unstubAllGlobals()
   })
 
   it('renders posts with correct content', () => {
@@ -83,7 +99,7 @@ describe('HomeRoute', () => {
 
     const postCaption = screen.getByText('NOVO POST')
     const postLocation = screen.getByText('BELO HORIZONTE UAI')
-    const postDate = screen.getByText('2023-05-19T23:02:02.292783+00:00')
+    const postDate = screen.getByText('May 19, 23')
 
     expect(postCaption).toBeInTheDocument()
     expect(postLocation).toBeInTheDocument()

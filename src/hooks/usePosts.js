@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../clients/supabase'
-import quicksort from '../utils/quicksort/quicksort'
 
 /* *
  * @function usePosts
@@ -10,34 +9,33 @@ import quicksort from '../utils/quicksort/quicksort'
 export default function usePosts(option = 'Ascending') {
     const [posts, setPosts] = useState([])
 
+    const fetchPosts = useCallback(async () => {
+        try {
+            const { data, error } = await supabase.from('posts').select('*').order('created_at', { ascending: option === 'Ascending' })
+            if (error) {
+                throw error
+            }
+            setPosts(data)
+        } catch (error) {
+            console.error(error.message)
+        }
+    }, [option])
+
     useEffect(() => {
-        console.log('usePosts')
         const channel = supabase.channel('realtime posts').on('postgres_changes',
             { event: '*', schema: 'public', table: 'posts' },
-            (payload) => {
-                console.log(payload)
-                // setPosts(payload.)
+            () => {
+                fetchPosts()
             }).subscribe()
 
         return () => {
             supabase.removeChannel(channel)
         }
-    }, [supabase])
+    }, [supabase, fetchPosts])
 
     useEffect(() => {
         fetchPosts()
-        async function fetchPosts() {
-            try {
-                const { data, error } = await supabase.from('posts').select('*')
-                if (error) {
-                    throw error
-                }
-                setPosts(quicksort(data, option))
-            } catch (error) {
-                alert(error.message)
-            }
-        }
-    }, [option])
+    }, [fetchPosts])
 
     return posts
 }

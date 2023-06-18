@@ -6,7 +6,7 @@ const mockData = {
   photo: 'image.png',
   caption: 'A test caption',
   location: 'Test Location',
-  created_at: '2023-01-01',
+  created_at: new Date('2023-01-01'),
 }
 
 describe('<Post />', () => {
@@ -34,7 +34,7 @@ describe('<Post />', () => {
   it('renders post creation date', () => {
     render(<Post {...mockData} />)
 
-    const postDate = screen.getByText('2023-01-01')
+    const postDate = screen.getByText('Dec 31, 22')
     expect(postDate).toBeInTheDocument()
   })
 })

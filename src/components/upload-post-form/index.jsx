@@ -55,7 +55,7 @@ export default function UploadPostForm({ onClose, isOpen }) {
             )}
             <div className="flex space-x-2 self-end">
               <Button variant="secondary" onClick={onClose}>
-                Cancel
+                Cancelar
               </Button>
               <Button
                 type="submit"
@@ -64,7 +64,7 @@ export default function UploadPostForm({ onClose, isOpen }) {
                   onClose()
                 }}
               >
-                Send
+                Enviar
               </Button>
             </div>
           </div>

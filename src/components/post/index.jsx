@@ -31,7 +31,7 @@ export default function Post({ photo, caption, location, created_at }) {
       />
       <p>{caption}</p>
       <p>{location}</p>
-      <p>{created_at}</p>
+      <p>{new Date(created_at).toLocaleDateString([], { day: '2-digit', month: 'short', year: '2-digit' })}</p>
     </div>
   )
 }
