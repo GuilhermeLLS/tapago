@@ -10,7 +10,7 @@ export default defineConfig({
     setupFiles: ['./src/test-utils/setup.js'],
     testMatch: ['**/*.test.{js,jsx}'],
     coverage: {
-      reporter: ['text', 'html'],
+      reporter: ['text'],
       exclude: ['node_modules/', './src/test-utils'],
     },
   },
