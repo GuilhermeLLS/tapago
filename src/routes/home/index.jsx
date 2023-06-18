@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Button from '../../components/button'
+import SearchBar from '../../components/searchBar'
 import usePosts from '../../hooks/usePosts'
 
 export default function HomeRoute() {
@@ -13,12 +14,20 @@ export default function HomeRoute() {
       setSort('Descending')
     }
   }
+
+  const divStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'end',
+  };
+
   return (
     <div className="flex flex-col p-8">
       <Button variant="primary" onClick={() => alert('replace me!!')}>
         Upload
       </Button>
-      <div className="p-2 flex items-center">
+      <SearchBar {...posts}/>
+      <div className="p-2 flex items-center" style={divStyle}>
         <label htmlFor="sortItems">Sort Itens</label>
         <select
           className="p-6"

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../clients/supabase'
-import quicksort from '../utils/quicksort'
+import quicksort from '../utils/quicksort/quicksort'
 
 /* *
  * @function usePosts
