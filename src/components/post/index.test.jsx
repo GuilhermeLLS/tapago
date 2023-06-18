@@ -34,7 +34,7 @@ describe('<Post />', () => {
   it('renders post creation date', () => {
     render(<Post {...mockData} />)
 
-    const postDate = screen.getByText('Dec 31, 22')
+    const postDate = screen.getByText('Jan 01, 23')
     expect(postDate).toBeInTheDocument()
   })
 })
