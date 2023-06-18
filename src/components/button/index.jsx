@@ -1,6 +1,6 @@
 const VariantStyles = {
   primary: 'bg-blue-500 text-white',
-  secondary: 'bg-white text-blue-500',
+  secondary: 'bg-white text-blue-500 border-blue-500 border',
 }
 
 /**

@@ -11,6 +11,20 @@ export default function usePosts(option = 'Ascending') {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
+        console.log('usePosts')
+        const channel = supabase.channel('realtime posts').on('postgres_changes',
+            { event: '*', schema: 'public', table: 'posts' },
+            (payload) => {
+                console.log(payload)
+                // setPosts(payload.)
+            }).subscribe()
+
+        return () => {
+            supabase.removeChannel(channel)
+        }
+    }, [supabase])
+
+    useEffect(() => {
         fetchPosts()
         async function fetchPosts() {
             try {

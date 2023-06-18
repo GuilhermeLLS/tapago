@@ -10,14 +10,12 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     let gotSession = localStorage.getItem('authSession')
     if (gotSession) {
-      console.log('Retrieved: ', gotSession)
       setUser(JSON.parse(gotSession))
     }
     async function getSession() {
       setLoading(false)
       const { subscription } = supabase.auth.onAuthStateChange(async (_event, session) => {
         if (session) {
-          console.log('New session: ', session)
           setUser(session.user)
           localStorage.setItem('authSession', JSON.stringify(session))
         } else {

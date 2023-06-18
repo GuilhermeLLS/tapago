@@ -17,33 +17,30 @@ export const signIn = async (email, password) => {
   }
 }
 
-export const uploadImage = async (imageUri, caption) => {
+export const uploadPost = async ({ imageUri, caption, location }) => {
   try {
-    const userId = supabase.auth.user().id
-
-    // Converter imagem local (no dispositivo) para um Blob
-    const response = await fetch(imageUri)
-    const blob = await response.blob()
-    console.log('blob', blob)
+    const userId = (await supabase.auth.getUser()).data.user.id
     // Gerar nome de arquivo com base na data e hora atuais
-    const fileName = `pictures/${userId}/${Date.now()}.jpg`
+    const fileName = `/posts/${userId}/${Date.now()}.jpg`
 
     // Fazer upload do Blob para Supabase Storage
-    const { error: uploadError } = await supabase.storage.from('pictures').upload(fileName, blob)
+    const { error: uploadError, data } = await supabase.storage.from('pictures').upload(fileName, imageUri, {
+      cacheControl: '3600',
+      upsert: false,
+    })
 
     if (uploadError) {
       console.log('uploadError', JSON.stringify(uploadError))
       throw uploadError
     }
-
     // Adicionar novo registro à tabela 'posts'
     const { error: insertError } = await supabase.from('posts').insert([
       {
-        user_id: userId,
-        image_url: `/pictures/${fileName}`,
+        author_id: userId,
+        photo: `storage/v1/object/public/pictures/${data.path}`,
         caption: caption,
         created_at: new Date(),
-        location: 'Unknown',
+        location: location,
       },
     ])
 
@@ -54,6 +51,7 @@ export const uploadImage = async (imageUri, caption) => {
 
     return { success: true }
   } catch (error) {
+    console.error(error)
     return { error: error }
   }
 }

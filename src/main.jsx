@@ -8,6 +8,7 @@ import RegisterRoute from './routes/register'
 import LoginRoute from './routes/login'
 import IndexRoute from './routes'
 import { AuthProvider } from './context/auth'
+import PostModalProvider from './context/post-modal'
 
 const router = createBrowserRouter([
   {
@@ -39,7 +40,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <PostModalProvider>
+        <RouterProvider router={router} />
+      </PostModalProvider>
     </AuthProvider>
   </React.StrictMode>,
 )

@@ -3,11 +3,13 @@ import Button from '../../components/button'
 import SearchBar from '../../components/searchBar'
 import usePosts from '../../hooks/usePosts'
 import Post from '../../components/post'
+import UploadPostForm from '../../components/upload-post-form'
+import usePostModal from '../../hooks/usePostModal'
 
 export default function HomeRoute() {
   const [sort, setSort] = useState()
   const posts = usePosts(sort)
-
+  const [isOpen, setIsOpen] = usePostModal()
   function handleSortingChange(event) {
     if (event.value == 'Ascending') {
       setSort('Ascending')
@@ -24,7 +26,8 @@ export default function HomeRoute() {
 
   return (
     <div className="flex flex-col p-8">
-      <Button variant="primary" onClick={() => alert('replace me!!')}>
+      <UploadPostForm isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <Button variant="primary" onClick={() => setIsOpen(true)}>
         Upload
       </Button>
       <SearchBar {...posts}/>
@@ -41,10 +44,7 @@ export default function HomeRoute() {
           <option value="Descending">Descending</option>
         </select>
       </div>
-      {posts.length && posts.map((post) => (
-        <Post key={post.id} {...post} />
-      ))}
+      {posts.length && posts.map((post) => <Post key={post.id} {...post} />)}
     </div>
   )
 }
-
