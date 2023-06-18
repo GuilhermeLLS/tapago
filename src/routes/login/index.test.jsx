@@ -1,10 +1,14 @@
-import { afterEach, describe, it, expect, vi } from 'vitest'
+import { afterEach, describe, it, expect, vi, beforeEach } from 'vitest'
 import * as supabase from '../../clients/supabase'
-import { screen, fireEvent } from '@testing-library/react'
+import { screen, fireEvent, act } from '@testing-library/react'
 import { renderWithRouter } from '../../test-utils'
 import LoginRoute from '.'
 
 describe('LoginRoute', () => {
+  beforeEach(() => {
+    vi.spyOn(window, 'alert').mockImplementation(() => {})
+  })
+  
   afterEach(() => {
     vi.restoreAllMocks()
   })
@@ -25,8 +29,10 @@ describe('LoginRoute', () => {
     const emailInput = screen.getByPlaceholderText('Email')
     const passwordInput = screen.getByPlaceholderText('Password')
 
-    fireEvent.change(emailInput, { target: { value: 'test@email.com' } })
-    fireEvent.change(passwordInput, { target: { value: '123456' } })
+    act(() => {
+      fireEvent.change(emailInput, { target: { value: 'test@email.com' } })
+      fireEvent.change(passwordInput, { target: { value: '123456' } })
+    })
 
     expect(emailInput).toHaveValue('test@email.com')
     expect(passwordInput).toHaveValue('123456')
@@ -36,7 +42,9 @@ describe('LoginRoute', () => {
     renderWithRouter(<LoginRoute />, '/login')
     const loginButton = screen.getByText('Login')
 
-    fireEvent.click(loginButton)
+    act(() => {
+      fireEvent.click(loginButton)
+    })
 
     const spySignIn = vi.spyOn(supabase, 'signIn').mockImplementation(() => {})
     expect(spySignIn).toHaveBeenCalledTimes(0)
@@ -49,9 +57,11 @@ describe('LoginRoute', () => {
     const loginButton = screen.getByText('Login')
     const spySignIn = vi.spyOn(supabase, 'signIn').mockReturnValue({ error: true })
 
-    fireEvent.change(emailInput, { target: { value: 'invalid@email.com' } })
-    fireEvent.change(passwordInput, { target: { value: '0' } })
-    fireEvent.click(loginButton)
+    act(() => {
+      fireEvent.change(emailInput, { target: { value: 'invalid@email.com' } })
+      fireEvent.change(passwordInput, { target: { value: '0' } })
+      fireEvent.click(loginButton)
+    })
 
     expect(spySignIn).toHaveBeenCalledTimes(1)
     expect(emailInput).toBeInTheDocument()
@@ -66,9 +76,11 @@ describe('LoginRoute', () => {
     const loginButton = screen.getByText('Login')
     const spySignIn = vi.spyOn(supabase, 'signIn').mockReturnValue({ error: null })
 
-    fireEvent.change(emailInput, { target: { value: 'validSignedUp@email.com' } })
-    fireEvent.change(passwordInput, { target: { value: 'strongPassword' } })
-    fireEvent.click(loginButton)
+    act(() => {
+      fireEvent.change(emailInput, { target: { value: 'validSignedUp@email.com' } })
+      fireEvent.change(passwordInput, { target: { value: 'strongPassword' } })
+      fireEvent.click(loginButton)
+    })
 
     expect(spySignIn).toHaveBeenCalledTimes(1)
     expect(emailInput).toBeInTheDocument()
@@ -80,7 +92,9 @@ describe('LoginRoute', () => {
     renderWithRouter(<LoginRoute />, '/login')
     const signUpButton = screen.getByText('Dont have an account? Sign Up')
 
-    fireEvent.click(signUpButton)
+    act(() => {
+      fireEvent.click(signUpButton)
+    })
 
     expect(window.location.pathname).toBe('/register')
   })
@@ -91,7 +105,9 @@ describe('LoginRoute', () => {
     renderWithRouter(<LoginRoute />, '/login')
     const loginButton = screen.getByText('Login')
 
-    fireEvent.click(loginButton)
+    act(() => {
+      fireEvent.click(loginButton)
+    })
 
     expect(window.alert).toHaveBeenCalledWith('Error: Please fill out all fields')
   })
