@@ -10,7 +10,9 @@ export default defineConfig({
     setupFiles: ['./src/test-utils/setup.js'],
     testMatch: ['**/*.test.{js,jsx}'],
     coverage: {
-      reporter: ['text'],
+      reporter: [
+        ['lcov', { 'projectRoot': './src' }],
+      ],
       exclude: ['node_modules/', './src/test-utils'],
     },
   },
