@@ -94,6 +94,5 @@ describe('LoginRoute', () => {
     fireEvent.click(loginButton)
 
     expect(window.alert).toHaveBeenCalledWith('Error: Please fill out all fields')
-
   })
 })

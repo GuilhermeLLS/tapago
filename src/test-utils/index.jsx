@@ -6,16 +6,13 @@ const renderWithRouter = (ui, { route = '/' } = {}) => {
   window.history.pushState({}, 'Test page', route)
 
   return {
-    ...render(
-      ui,
-      {
-        wrapper: ({ children }) => (
-          <PostModalProvider>
-            <BrowserRouter>{children}</BrowserRouter>
-          </PostModalProvider>
-        ),
-      },
-    ),
+    ...render(ui, {
+      wrapper: ({ children }) => (
+        <PostModalProvider>
+          <BrowserRouter>{children}</BrowserRouter>
+        </PostModalProvider>
+      ),
+    }),
   }
 }
 

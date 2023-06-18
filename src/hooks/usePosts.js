@@ -7,35 +7,40 @@ import { supabase } from '../clients/supabase'
  * @returns {Array} posts - An array of posts sorted by date
  */
 export default function usePosts(option = 'Ascending') {
-    const [posts, setPosts] = useState([])
+  const [posts, setPosts] = useState([])
 
-    const fetchPosts = useCallback(async () => {
-        try {
-            const { data, error } = await supabase.from('posts').select('*').order('created_at', { ascending: option === 'Ascending' })
-            if (error) {
-                throw error
-            }
-            setPosts(data)
-        } catch (error) {
-            console.error(error.message)
-        }
-    }, [option])
+  const fetchPosts = useCallback(async () => {
+    try {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .order('created_at', { ascending: option === 'Ascending' })
+      if (error) {
+        throw error
+      }
+      setPosts(data)
+    } catch (error) {
+      console.error(error.message)
+    }
+  }, [option])
 
-    useEffect(() => {
-        const channel = supabase.channel('realtime posts').on('postgres_changes',
-            { event: '*', schema: 'public', table: 'posts' },
-            () => {
-                fetchPosts()
-            }).subscribe()
-
-        return () => {
-            supabase.removeChannel(channel)
-        }
-    }, [supabase, fetchPosts])
-
-    useEffect(() => {
+  useEffect(() => {
+    const channel = supabase
+      .channel('realtime posts')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, () => {
         fetchPosts()
-    }, [fetchPosts])
+      })
+      .subscribe()
 
-    return posts
+    return () => {
+      supabase.removeChannel(channel)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [supabase, fetchPosts])
+
+  useEffect(() => {
+    fetchPosts()
+  }, [fetchPosts])
+
+  return posts
 }
