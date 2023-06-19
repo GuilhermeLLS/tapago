@@ -43,6 +43,7 @@ export default function RegisterRoute() {
       <label>
         Name
         <input
+          data-testid="input-name"
           className="border border-gray-200 rounded-md px-3 py-2 w-full mt-2 mb-4"
           onChange={(e) => setName(e.target.value)}
           value={name}
@@ -51,6 +52,7 @@ export default function RegisterRoute() {
       <label>
         Email
         <input
+          data-testid="input-email"
           className="border border-gray-200 rounded-md px-3 py-2 w-full mt-2 mb-4"
           onChange={(e) => setEmail(e.target.value)}
           value={email}
@@ -60,6 +62,7 @@ export default function RegisterRoute() {
       <label>
         Password
         <input
+          data-testid="input-password"
           className="border border-gray-200 rounded-md px-3 py-2 w-full mt-2 mb-4"
           onChange={(e) => setPassword(e.target.value)}
           value={password}
