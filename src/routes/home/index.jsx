@@ -51,8 +51,8 @@ export default function HomeRoute() {
           value={sort}
           onChange={(event) => handleSortingChange(event.target)}
         >
-          <option value="Ascending">Mais novo</option>
-          <option value="Descending">Mais antigo</option>
+          <option value="Ascending">Mais antigo</option>
+          <option value="Descending">Mais novo</option>
         </select>
       </div>
       {searchResults.length && searchResults.map((post) => <Post key={post.id} {...post} />)}
