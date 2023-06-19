@@ -29,7 +29,7 @@ export default function Post({ photo, caption, location, created_at }) {
         alt="Post"
         className="w-full h-64 object-cover mb-4 rounded-md"
       />
-      <p>{caption}</p>
+      <p data-testid={'post-caption'}>{caption}</p>
       <p>{location}</p>
       <p>{new Date(created_at).toLocaleDateString([], { day: '2-digit', month: 'short', year: '2-digit' })}</p>
     </div>
