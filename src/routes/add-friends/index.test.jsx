@@ -1,5 +1,5 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { fireEvent, screen } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { fireEvent, screen, act } from '@testing-library/react'
 import { renderWithRouter } from '../../test-utils'
 import * as requests from '../../services/requests'
 import AddFriendsRoute from '.'
@@ -26,6 +26,9 @@ vi.mock('@supabase/supabase-js', () => {
 })
 
 describe('AddFriendsRoute', () => {
+  beforeEach(() => {
+    vi.spyOn(window, 'alert').mockImplementation(() => {})
+  })
   afterEach(() => {
     vi.restoreAllMocks()
   })
@@ -43,7 +46,9 @@ describe('AddFriendsRoute', () => {
     renderWithRouter(<AddFriendsRoute />, '/add-friends')
     const friendsEmailInput = screen.getByLabelText('Friends Email')
 
-    fireEvent.change(friendsEmailInput, { target: { value: 'friend@test.com' } })
+    act(() => {
+      fireEvent.change(friendsEmailInput, { target: { value: 'friend@test.com' } })
+    })
 
     expect(friendsEmailInput).toHaveValue('friend@test.com')
   })
@@ -54,7 +59,9 @@ describe('AddFriendsRoute', () => {
     const addButton = screen.getByText('Add Friend')
     const friendsEmailInput = screen.getByLabelText('Friends Email')
 
-    fireEvent.click(addButton)
+    act(() => {
+      fireEvent.click(addButton)
+    })
     expect(mockGetId).toHaveBeenCalledOnce()
     expect(friendsEmailInput).toBeEmptyDOMElement()
   })
@@ -65,7 +72,9 @@ describe('AddFriendsRoute', () => {
     renderWithRouter(<AddFriendsRoute />, '/add-friends')
     const addButton = screen.getByText('Add Friend')
 
-    fireEvent.click(addButton)
+    act(() => {
+      fireEvent.click(addButton)
+    })
     expect(mockGetId).toHaveBeenCalledOnce()
   })
 
@@ -75,7 +84,9 @@ describe('AddFriendsRoute', () => {
     renderWithRouter(<AddFriendsRoute />, '/add-friends')
     const addButton = screen.getByText('Add Friend')
 
-    fireEvent.click(addButton)
+    act(() => {
+      fireEvent.click(addButton)
+    })
     expect(mockGetId).toHaveBeenCalledOnce()
   })
 })

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { screen, fireEvent } from '@testing-library/react'
+import { screen, fireEvent, act } from '@testing-library/react'
 import ProfileEditRoute from '.'
 import { renderWithRouter } from '../../test-utils'
 import { supabase } from '../../clients/supabase'
@@ -71,8 +71,10 @@ describe('ProfileEditRoute', () => {
     const emailInput = await screen.findByDisplayValue('test@email.com')
     const nameInput = await screen.findByDisplayValue('Test User')
 
-    fireEvent.change(emailInput, { target: { value: 'newemail@email.com' } })
-    fireEvent.change(nameInput, { target: { value: 'New User' } })
+    act(() => {
+      fireEvent.change(emailInput, { target: { value: 'newemail@email.com' } })
+      fireEvent.change(nameInput, { target: { value: 'New User' } })
+    })
 
     expect(emailInput.value).toBe('newemail@email.com')
     expect(nameInput.value).toBe('New User')
@@ -101,7 +103,9 @@ describe('ProfileEditRoute', () => {
     renderWithRouter(<ProfileEditRoute />, '/profile-edit')
     const saveButton = await screen.findByRole('button', { name: 'Save Changes' })
 
-    fireEvent.click(saveButton)
+    act(() => {
+      fireEvent.click(saveButton)
+    })
 
     expect(mockAlert).toHaveBeenCalled()
     mockAlert.mockRestore()

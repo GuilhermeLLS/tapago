@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from 'vitest'
-import { fireEvent, screen } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { act, fireEvent, screen } from '@testing-library/react'
 import { renderWithRouter } from '../../test-utils'
 import RegisterRoute from '.'
 
@@ -28,6 +28,13 @@ vi.mock('@supabase/supabase-js', () => {
 })
 
 describe('RegisterRoute', () => {
+  beforeEach(() => {
+    vi.spyOn(window, 'alert').mockImplementation(() => {})
+  })
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   it('should render the register route', () => {
     renderWithRouter(<RegisterRoute />, '/register')
 
@@ -49,9 +56,11 @@ describe('RegisterRoute', () => {
     const emailInput = screen.getByLabelText('Email')
     const passwordInput = screen.getByLabelText('Password')
 
-    fireEvent.change(nameInput, { target: { value: 'Test' } })
-    fireEvent.change(emailInput, { target: { value: 'test@email.com' } })
-    fireEvent.change(passwordInput, { target: { value: '123456' } })
+    act(() => {
+      fireEvent.change(nameInput, { target: { value: 'Test' } })
+      fireEvent.change(emailInput, { target: { value: 'test@email.com' } })
+      fireEvent.change(passwordInput, { target: { value: '123456' } })
+    })
 
     expect(nameInput).toHaveValue('Test')
     expect(emailInput).toHaveValue('test@email.com')
@@ -65,7 +74,9 @@ describe('RegisterRoute', () => {
 
     const registerButton = screen.getByRole('button', { name: 'Register' })
 
-    fireEvent.click(registerButton)
+    act(() => {
+      fireEvent.click(registerButton)
+    })
     expect(nameInput).toBeEmptyDOMElement()
     expect(emailInput).toBeEmptyDOMElement()
   })
