@@ -11,22 +11,22 @@ O projeto Tá Pago! tem como objetivo criar uma rede de acompanhamento coletivo 
 ## Descrição do Sistema
 ### Funcionalidades Principais
 
-1. 
-   - 
-   - 
-   - 
+1. Criar publicação
+   - Escrever uma legenda
+   - Fazer o upload de uma foto
+   - Disponibilizar instantaneamente para toda a rede
 
-2. 
-   - 
-   - 
+2. Ordenar publicações
+   - Ordem cronológica
+   - Crescente ou decrescente
 
-3. 
-   - 
-   - 
-     - 
-     - 
-     - 
-
+3. Pesquisar posts
+   - Digitar as palavras-chave na barra de pesquisa
+     - As postagens são recomendadas enquanto o usuário digita a pesquisa
+     - A metodologia utilizada é a "distância de strings":
+       - São comparados os termos da pesquisa com os possíveis resultados
+       - Serão sugeridos aos usuários os termos que mais se assemelhem
+   - Restarão exibidos na tela do usuário os resultados correspondentes
 ### Tecnologias Utilizadas
 O código fonte do "Tá Pago!" utiliza as tecnologias e ferramentas abaixo:
 
