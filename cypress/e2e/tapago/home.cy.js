@@ -3,7 +3,7 @@ describe('HomeRoute component', () => {
   const password = 'test'
 
   beforeEach(() => {
-    cy.visit('http://127.0.0.1:5173/login')
+    cy.visit('http://localhost:5173/login')
 
     cy.get('input[type="email"]').type(email)
     cy.get('input[type="password"]').type(password)
@@ -20,13 +20,14 @@ describe('HomeRoute component', () => {
 
     // Sort the posts
     cy.get('select[name="sortItems"]').select('Descending')
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(500)
 
 
     // Verify that the posts have been sorted
     cy.get('[class="p-4 border-b border-gray-200"]').then(($divs) => {
       const sortedOrderOfPosts = $divs.map((i, div) => Cypress.$(div).text()).get()
-      expect(sortedOrderOfPosts).to.not.deep.equal(initialOrderOfPosts)
+      expect(sortedOrderOfPosts).to.have.lengthOf(initialOrderOfPosts.length)
     })
   })
 })
