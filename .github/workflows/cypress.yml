@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-22.04
     container: cypress/browsers:node16.16.0-chrome107-ff107-edge
 
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -23,8 +22,10 @@ jobs:
 
       - name: Start server and test
         uses: cypress-io/github-action@v5
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         with:
           build: npm run build
           start: npm run dev
           browser: chrome
-

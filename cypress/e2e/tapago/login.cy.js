@@ -1,6 +1,6 @@
 describe('LoginRoute', () => {
   beforeEach(() => {
-    cy.visit('http://127.0.0.1:5173/login')
+    cy.visit('http://localhost:5173/login')
   })
 
   it('logs in an existing user', () => {

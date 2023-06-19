@@ -3,7 +3,7 @@ describe('HomeRoute component', () => {
   const password = 'test'
 
   beforeEach(() => {
-    cy.visit('http://127.0.0.1:5173/login')
+    cy.visit('http://localhost:5173/login')
 
     cy.get('input[type="email"]').type(email)
     cy.get('input[type="password"]').type(password)
