@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import ComputeLevenshteinDistance from '../../utils/sortingAlg'
-
-const SearchBar = (item) => {
-  const [searchTerm, setSearchTerm] = useState('')
+import usePosts from '../../hooks/usePosts'
+const SearchBar = ({ onSuggestionClick, setSearchTerm }) => {
+  let [item] = usePosts()
   const [suggestions, setSuggestions] = useState([])
 
   const handleInputChange = (event) => {
@@ -17,6 +17,7 @@ const SearchBar = (item) => {
   const handleSuggestionClick = (suggestion) => {
     setSearchTerm(suggestion)
     setSuggestions([])
+    onSuggestionClick(suggestion)
   }
 
   const performSearchSuggestions = (value) => {
@@ -24,7 +25,7 @@ const SearchBar = (item) => {
 
     if (value.length > 1) {
       for (var i = 0; i < length; i++) {
-        suggestions.push(item[i].caption.toLowerCase())
+        suggestions.push(item[i]?.caption.toLowerCase())
       }
     }
 
@@ -44,7 +45,6 @@ const SearchBar = (item) => {
       <input
         type="text"
         placeholder="Search"
-        value={searchTerm}
         onChange={handleInputChange}
         className="border border-gray-200 rounded-md px-3 w-full py-2 mt-4"
       />
