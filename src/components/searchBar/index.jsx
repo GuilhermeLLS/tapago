@@ -1,9 +1,20 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import ComputeLevenshteinDistance from '../../utils/sortingAlg'
 import usePosts from '../../hooks/usePosts'
-const SearchBar = ({ onSuggestionClick, setSearchTerm }) => {
-  let [item] = usePosts()
+import { Combobox } from '@headlessui/react'
+
+const SearchBar = ({ onSuggestionClick, setSearchTerm, searchTerm }) => {
+  let posts = usePosts()
   const [suggestions, setSuggestions] = useState([])
+
+  let length = 0
+
+  for (let key in posts) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (posts.hasOwnProperty(key)) {
+      length++
+    }
+  }
 
   const handleInputChange = (event) => {
     const { value } = event.target
@@ -24,11 +35,10 @@ const SearchBar = ({ onSuggestionClick, setSearchTerm }) => {
     let suggestions = []
 
     if (value.length > 1) {
-      for (var i = 0; i < length; i++) {
-        suggestions.push(item[i]?.caption.toLowerCase())
+      for (let i = 0; i < length; i++) {
+        suggestions.push(posts[i]?.caption.toLowerCase())
       }
     }
-
     return suggestions.sort((a, b) =>
       ComputeLevenshteinDistance.CalculateSimilarity(value, a) <
       ComputeLevenshteinDistance.CalculateSimilarity(value, b)
@@ -41,23 +51,32 @@ const SearchBar = ({ onSuggestionClick, setSearchTerm }) => {
   }
 
   return (
-    <div className="search-bar">
-      <input
-        type="text"
-        placeholder="Search"
-        onChange={handleInputChange}
-        className="border border-gray-200 rounded-md px-3 w-full py-2 mt-4"
-      />
-      {suggestions.length > 0 && (
-        <ul className="suggestions">
-          {suggestions.map((suggestion, index) => (
-            <li key={index} onClick={() => handleSuggestionClick(suggestion)}>
-              {suggestion}
-            </li>
+    <Combobox>
+      <div className="relative mt-1">
+        <div className="relative w-full cursor-default overflow-hidden bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
+          <Combobox.Input
+            value={searchTerm}
+            placeholder="Search"
+            className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
+            onChange={(event) => handleInputChange(event)}
+          />
+        </div>
+        <Combobox.Options className="absolute mt-1 max-h-60 px-2 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+          {suggestions.map((suggestion) => (
+            <Combobox.Option key={suggestion} value={suggestion} as={Fragment}>
+              {({ active }) => (
+                <li
+                  className={`flex ${active ? 'bg-blue-500 text-white' : 'bg-white text-black'}`}
+                  onClick={() => handleSuggestionClick(suggestion)}
+                >
+                  <div>{suggestion}</div>
+                </li>
+              )}
+            </Combobox.Option>
           ))}
-        </ul>
-      )}
-    </div>
+        </Combobox.Options>
+      </div>
+    </Combobox>
   )
 }
 

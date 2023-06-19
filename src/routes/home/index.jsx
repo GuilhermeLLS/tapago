@@ -41,9 +41,9 @@ export default function HomeRoute() {
       <Button variant="primary" onClick={() => setIsOpen(true)}>
         Upload
       </Button>
-      <SearchBar onSuggestionClick={handleSuggestionClick} setSearchTerm={setSearchTerm} />
+      <SearchBar onSuggestionClick={handleSuggestionClick} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div className="p-2 flex items-center justify-end">
-        <label htmlFor="sortItems">Sort Items</label>
+        <label htmlFor="sortItems">Ordenar Lista</label>
         <select
           className="p-6"
           name="sortItems"
@@ -51,8 +51,8 @@ export default function HomeRoute() {
           value={sort}
           onChange={(event) => handleSortingChange(event.target)}
         >
-          <option value="Ascending">Ascending</option>
-          <option value="Descending">Descending</option>
+          <option value="Ascending">Mais novo</option>
+          <option value="Descending">Mais antigo</option>
         </select>
       </div>
       {searchResults.length && searchResults.map((post) => <Post key={post.id} {...post} />)}

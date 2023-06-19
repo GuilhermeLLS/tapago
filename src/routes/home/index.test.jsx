@@ -40,7 +40,7 @@ describe('HomeRoute', () => {
   it('changes the sort state when sort selection changes', async () => {
     renderWithRouter(<HomeRoute />, '/')
 
-    const sortSelect = screen.getByRole('combobox')
+    const sortSelect = screen.getByLabelText('Ordenar Lista')
 
     act(() => {
       fireEvent.change(sortSelect, { target: { value: 'Ascending' } })
